@@ -1,0 +1,40 @@
+<!-- public/vulnerable.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Vulnerable Demo</title>
+</head>
+<body>
+  <h2>1. Comment form (XSS vulnerability)</h2>
+  <input type="text" id="commentInput" placeholder="Your comment">
+  <button id="post">Post</button>
+  <ul id="comments"></ul>
+
+  <h2>2. Calculator (eval vulnerability)</h2>
+  <input id="expr" placeholder="Expression">
+  <button id="calc">Compute</button>
+  <div>Result: <span id="output"></span></div>
+
+  <script>
+    // XSS: unescaped innerHTML
+    document.getElementById('post').onclick = () => {
+      const t = document.getElementById('commentInput').value
+      const li = document.createElement('li')
+      li.innerHTML = t
+      document.getElementById('comments').appendChild(li)
+    }
+
+    // eval: runs any JS
+    document.getElementById('calc').onclick = () => {
+      try {
+        const r = eval(document.getElementById('expr').value)
+        document.getElementById('output').textContent = r
+      } catch {
+        document.getElementById('output').textContent = 'Error'
+      }
+    }
+  </script>
+</body>
+</html>
+
